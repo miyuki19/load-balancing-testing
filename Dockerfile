@@ -20,7 +20,7 @@ COPY prisma ./prisma/
 RUN npx prisma generate
 
 # Expose the port the app runs on
-EXPOSE 3005
+EXPOSE ${APP_PORT}
 
 # Define the command to run the app
 CMD ["node", "server.js"]
