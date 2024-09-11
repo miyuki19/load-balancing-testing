@@ -39,7 +39,10 @@ class StudentController {
     try {
       const { id } = req.params
       const response = await StudentService.deleteStudent(id)
-      return res.status(200).json(response)
+      if (response.status === 404) {
+        return res.status(404).json({ error: 'Record not found' })
+      }
+      return res.status(200).json(response.data)
     } catch (error) {
       return res.status(500).json({ error: error.message })
     }

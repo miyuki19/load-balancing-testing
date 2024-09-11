@@ -37,6 +37,9 @@ class NoticeController {
     try {
       const { id } = req.params
       const response = await NoticeService.deleteNotice(id)
+      if (response.status === 404) {
+        return res.status(404).json({ error: 'Record not found' })
+      }
       return res.status(200).json(response)
     } catch (error) {
       return res.status(500).json({ error: error.message })

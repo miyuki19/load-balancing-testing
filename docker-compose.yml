@@ -5,13 +5,6 @@ services:
       dockerfile: Dockerfile
     environment:
       - APP_PORT=${APP_PORT}
-      - DYNAMO_REGION=${DYNAMO_REGION}
-      - DYNAMO_ENDPOINT=${DYNAMO_ENDPOINT}
-      - DYNAMO_ACCESS_KEY=${DYNAMO_ACCESS_KEY}
-      - DYNAMO_SECRET_KEY=${DYNAMO_SECRET_KEY}
-      - DATABASE_URL=${DATABASE_URL}
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    volumes:
-      - .:/usr/src/app
     command: ["npm", "start"]

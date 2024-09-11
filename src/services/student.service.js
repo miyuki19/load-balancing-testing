@@ -54,10 +54,22 @@ class StudentService {
       const deletedStudent = await prisma.student.delete({
         where: { studentCode: Number(id) },
       })
-      return deletedStudent
+      return {
+        status: 200,
+        data: deletedStudent,
+      }
     } catch (error) {
-      console.error('Error deleting student:', error)
-      throw error
+      if (error.code === 'P2025') {
+        // Handle the case where the record does not exist
+        return {
+          status: 404,
+          error: 'Record not found',
+        }
+      }
+      return {
+        status: 500,
+        error: 'Internal server error',
+      }
     }
   }
 

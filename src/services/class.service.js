@@ -51,10 +51,22 @@ class ClassService {
       const deletedClass = await prisma.class.delete({
         where: { id: Number(id) },
       })
-      return deletedClass
+      return {
+        status: 200,
+        data: deletedClass,
+      }
     } catch (error) {
-      console.error('Error deleting class:', error)
-      throw error
+      if (error.code === 'P2025') {
+        // Handle the case where the record does not exist
+        return {
+          status: 404,
+          error: 'Record not found',
+        }
+      }
+      return {
+        status: 500,
+        error: 'Internal server error',
+      }
     }
   }
 

@@ -89,8 +89,17 @@ class NoticeService {
       await this.docClient.send(new DeleteCommand(params))
       return { id }
     } catch (error) {
-      console.error('Error deleting notice:', error)
-      throw error
+      if (error.name === 'ResourceNotFoundException') {
+        // Handle the case where the record does not exist
+        return {
+          status: 404,
+          error: 'Record not found',
+        }
+      }
+      return {
+        status: 500,
+        error: 'Internal server error',
+      }
     }
   }
 

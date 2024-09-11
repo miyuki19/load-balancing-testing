@@ -58,10 +58,22 @@ class ClassAffiliationService {
       const deletedClassAffiliation = await prisma.classAffiliation.delete({
         where: { id: Number(id) },
       })
-      return deletedClassAffiliation
+      return {
+        status: 200,
+        data: deletedClassAffiliation,
+      }
     } catch (error) {
-      console.error('Error deleting class affiliation:', error)
-      throw error
+      if (error.code === 'P2025') {
+        // Handle the case where the record does not exist
+        return {
+          status: 404,
+          error: 'Record not found',
+        }
+      }
+      return {
+        status: 500,
+        error: 'Internal server error',
+      }
     }
   }
 
